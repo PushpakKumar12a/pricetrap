@@ -15,7 +15,7 @@ type Props = {
 const ProductsDetails = async({params}:Props)=> {
   const {id} = params
   const allProducts = await getAllProducts();
-  const product:Product = await getProductById(id)
+  const product:Product | null= await getProductById(id)
   if(!product) redirect('/')
   const similarProducts = await getSimilarProducts(id)
   return (
