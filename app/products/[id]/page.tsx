@@ -10,12 +10,12 @@ import ProductCard from "@/components/ProductCard";
 import Modal from '@/components/Modal'
 
 type Props = {
-  params: {id: string}
+  params: Promise<{id: string}>
 }
 const ProductsDetails = async({params}:Props)=> {
-  const {id} = params
+  const {id} = await params
   const allProducts = await getAllProducts();
-  const product:Product | null= await getProductById(id)
+  const product:Product= await getProductById(id)
   if(!product) redirect('/')
   const similarProducts = await getSimilarProducts(id)
   return (
