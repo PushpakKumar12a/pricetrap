@@ -17,26 +17,26 @@ export async function generateEmailBody(
   const THRESHOLD_PERCENTAGE = 40;
   // Shorten the product title
   const shortenedTitle =
-    product.title.length > 20 ? `${product.title.substring(0, 20)}...`: product.title;
+    product.title.length > 20 ? `${product.title.substring(0, 20)}...` : product.title;
 
   let subject = "";
   let body = "";
+
+
+  const productImage = `<img src="${product.image}" style="width: 100%; max-width: 300px; border-radius: 8px; margin: 20px auto; display: block;" />`;
+
+  const buyButton = `<a href="${product.url}" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 10px 20px; margin: 20px auto; color: #fff; background-color: #007BFF; border-radius: 5px; text-decoration: none; font-weight: bold; text-align: center;">Buy Now</a>`;
 
   switch (type) {
     case Notification.WELCOME:
       subject = `Welcome to Price Tracking for ${shortenedTitle}`;
       body = `
-        <div>
-          <h2>Welcome to PriceWise 🚀</h2>
-          <p>You are now tracking ${product.title}.</p>
-          <p>Here's an example of how you'll receive updates:</p>
-          <div style="border: 1px solid #ccc; padding: 10px; background-color: #f8f8f8;">
-            <h3>${product.title} is back in stock!</h3>
-            <p>We're excited to let you know that ${product.title} is now back in stock.</p>
-            <p>Don't miss out - <a href="${product.url}" target="_blank" rel="noopener noreferrer">buy it now</a>!</p>
-            <img src="https://i.ibb.co/pwFBRMC/Screenshot-2023-09-26-at-1-47-50-AM.png" alt="Product Image" style="max-width: 100%;" />
-          </div>
-          <p>Stay tuned for more updates on ${product.title} and other products you're tracking.</p>
+        <div style="font-family: Arial, sans-serif; padding: 15px; line-height: 1.6;">
+          <h2 style="color: #333; text-align: center; font-weight: bold;">Welcome to PriceTrap 🚀</h2>
+          <p style="text-align: center; font-weight: bold;">You are now tracking <strong>${product.title}</strong>.</p>
+          ${productImage}
+          <p style="text-align: center;">We'll notify you about updates, price drops, and stock changes for this product.</p>
+          ${buyButton}
         </div>
       `;
       break;
@@ -44,9 +44,11 @@ export async function generateEmailBody(
     case Notification.CHANGE_OF_STOCK:
       subject = `${shortenedTitle} is now back in stock!`;
       body = `
-        <div>
-          <h4>Hey, ${product.title} is now restocked! Grab yours before they run out again!</h4>
-          <p>See the product <a href="${product.url}" target="_blank" rel="noopener noreferrer">here</a>.</p>
+        <div style="font-family: Arial, sans-serif; padding: 20px; line-height: 1.6;">
+          <h2 style="color: #333; text-align: center; font-weight: bold;">Good News! 🎉</h2>
+          <p style="text-align: center;">The product <strong>${product.title}</strong> is back in stock!</p>
+          ${productImage}
+          ${buyButton}
         </div>
       `;
       break;
@@ -54,9 +56,11 @@ export async function generateEmailBody(
     case Notification.LOWEST_PRICE:
       subject = `Lowest Price Alert for ${shortenedTitle}`;
       body = `
-        <div>
-          <h4>Hey, ${product.title} has reached its lowest price ever!!</h4>
-          <p>Grab the product <a href="${product.url}" target="_blank" rel="noopener noreferrer">here</a> now.</p>
+        <div style="font-family: Arial, sans-serif; padding: 20px; line-height: 1.6;">
+          <h2 style="color: #333; text-align: center; font-weight: bold;">Lowest Price Alert! 💰</h2>
+          <p style="text-align: center;">The product <strong>${product.title}</strong> is now at its lowest price ever!</p>
+          ${productImage}
+          ${buyButton}
         </div>
       `;
       break;
@@ -64,9 +68,11 @@ export async function generateEmailBody(
     case Notification.THRESHOLD_MET:
       subject = `Discount Alert for ${shortenedTitle}`;
       body = `
-        <div>
-          <h4>Hey, ${product.title} is now available at a discount more than ${THRESHOLD_PERCENTAGE}%!</h4>
-          <p>Grab it right away from <a href="${product.url}" target="_blank" rel="noopener noreferrer">here</a>.</p>
+        <div style="font-family: Arial, sans-serif; padding: 20px; line-height: 1.6;">
+          <h2 style="color: #333; text-align: center; font-weight: bold;">Big Discount Alert! 🔥</h2>
+          <p style="text-align: center;">The product <strong>${product.title}</strong> is now available at a discount of more than <strong>${THRESHOLD_PERCENTAGE}%</strong>!</p>
+          ${productImage}
+          ${buyButton}
         </div>
       `;
       break;
@@ -78,10 +84,11 @@ export async function generateEmailBody(
   return { subject, body };
 }
 
+
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
-  secure: true,
-  port: 465,
+  secure: false,
+  port: 587,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASSWORD

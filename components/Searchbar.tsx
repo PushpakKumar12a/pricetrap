@@ -1,8 +1,7 @@
 "use client"
-import {getAllProducts, getProductById, scrapeAndStoreProduct} from "@/lib/actions";
-import { scrapeAmazonProduct } from "@/lib/scraper";
+import {getAllProducts, scrapeAndStoreProduct} from "@/lib/actions";
+// import { scrapeAmazonProduct } from "@/lib/scraper";
 import { FormEvent,useState } from "react";
-import {Product} from "@/types";
 
 const isValidAmazonProductURL = (url:string)=>{
     try{
