@@ -49,6 +49,7 @@ export async function GET(){
                     const productInfo ={
                         title: updatedProduct.title,
                         url: updatedProduct.url,
+                        image: updatedProduct.image,
                     }
 
                     const emailContent = await generateEmailBody(productInfo, emailNotifType);
