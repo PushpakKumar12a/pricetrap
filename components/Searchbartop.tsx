@@ -1,5 +1,6 @@
 "use client"
 import {getAllProducts, scrapeAndStoreProduct} from "@/lib/actions";
+import Image from "next/image";
 // import { scrapeAmazonProduct } from "@/lib/scraper";
 import { FormEvent,useState } from "react";
 
@@ -21,7 +22,7 @@ const isValidAmazonProductURL = (url:string)=>{
     return false
 }
 
-const Searchbar = () => {
+const Searchbartop = () => {
 
     const [searchPrompt,setSearchPrompt]=useState("")
     const [isLoading,setIsLoading]=useState(false)
@@ -41,7 +42,7 @@ const Searchbar = () => {
         }catch(error){
             console.log(error)
         }finally{
-            setIsLoading(false)
+            // setIsLoading(false)
             //Redirect to the last product
             const allProducts = await getAllProducts();
             const lastProduct = allProducts?.length ? allProducts[allProducts.length - 1] : null;
@@ -50,26 +51,35 @@ const Searchbar = () => {
 
     }
     return (
-        <form className="flex flex-wrap gap-4 mt-12"
-        onSubmit={handleSubmit}
-        >
-            <input
-            type="text"
-            value={searchPrompt}
-            onChange={(e)=>setSearchPrompt(e.target.value)}
-            placeholder="Enter Product link"
-            className="searchbar-input"
-            />
+        <form onSubmit={handleSubmit} className={`relative flex items-center w-full max-w-lg`}>
+            <div className={`relative w-full ${isLoading ? 'loading' : ''}`}>
+                <input
+                    type="text"
+                    value={searchPrompt}
+                    onChange={(e) => setSearchPrompt(e.target.value)}
+                    placeholder="Enter Product link"
+                    className="searchbartop-input"
+                />
+                <div className="absolute inset-0 rounded-lg pointer-events-none border-animation"></div>
+            </div>
             <button
-                className="searchbar-btn"
+                className="searchbartop-btn"
                 type="submit"
-                disabled={searchPrompt===''}
+                disabled={searchPrompt === '' || isLoading}
             >
-                {isLoading ? "Searching..." : "Search"}
+                {isLoading ? (
+                    <div className="loader"></div>
+                ) : (
+                    <Image
+                        src="/assets/icons/search.svg"
+                        alt="search"
+                        width={20}
+                        height={20}
+                    />
+                )}
             </button>
-
         </form>
-    )
+    );
 }
 
-export default Searchbar
+export default Searchbartop

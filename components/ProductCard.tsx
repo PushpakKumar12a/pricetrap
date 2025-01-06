@@ -20,10 +20,10 @@ const ProductCard = ({product}:Props) =>{
             />
         </div>
 
-        <div className='flex flex-col gap-3'>
+        <div className='flex flex-col gap-3 rounded-xl m-2.5 p-2'>
             <h3 className='product-title'>{product.title}</h3>
-            <div className='flex justify-between'>
-                <p className='text-black opacity-50 text-lg capitalize'>
+            <div className='flex justify-between gap-4'>
+                <p className='text-black opacity-50 text-lg capitalize truncate'>
                     {product.category}
                 </p>
                 <p className='text-black text-lg font-semibold'>

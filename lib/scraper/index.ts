@@ -1,6 +1,7 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
 import { extractCurrency, extractDescription, extractPrice } from "../utils";
+import Product from "../models/product.model";
 
 export async function scrapeAmazonProduct(url:string){
     if (!url) return
@@ -54,6 +55,19 @@ export async function scrapeAmazonProduct(url:string){
 
         const description = extractDescription($);
 
+        const reviews = $('#centerCol #averageCustomerReviews span #acrCustomerReviewText').text().replace(/[() ratings]/g, '');
+        
+        const stars1 = $('#cm_cr_dp_d_rating_histogram span.a-size-medium').text().trim().split(' ');
+        console.log('stars1',stars1);
+
+        let categorych;
+        if(title.includes('Laptop')){
+            categorych='Computers & Accessories';
+        }else{
+            categorych= $('#above-dp-container ul.a-unordered-list.a-horizontal').text().trim().split('›')[0];
+            console.log('categorych',categorych)
+        }
+
         const data ={
             url,
             title,
@@ -66,10 +80,10 @@ export async function scrapeAmazonProduct(url:string){
             lowestPrice: Number(currentPrice) || Number(originalPrice),
             highestPrice: Number(originalPrice) || Number(currentPrice),
             averagePrice: (Number(currentPrice) + Number(originalPrice))/2,
-            reviewsCount:100,
-            stars:4.5,
+            reviewsCount:reviews || 0,
+            stars:stars1[0] || 0,
             isOutOfStock:outofStock,
-            category:'category',
+            category:categorych,
             description,
         }
 

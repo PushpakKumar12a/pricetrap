@@ -1,8 +1,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import Searchbartop from './Searchbartop'
 
 const navIcons=[
-  {src:'/assets/icons/search.svg',alt:'search'},
+  // {src:'/assets/icons/search.svg',alt:'search'},
   {src:'/assets/icons/black-heart.svg',alt:'heart'},
   {src:'/assets/icons/user.svg',alt:'user'},
 ]
@@ -26,6 +27,7 @@ function Navbar() {
         </Link>
 
         <div className="flex items-center gap-5">
+          <Searchbartop/>
           {navIcons.map((icon)=>(
             <Image 
               key={icon.alt}

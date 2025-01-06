@@ -44,39 +44,6 @@ const ProductsDetails = async({params}:Props)=> {
                 Visit Product
               </Link>
             </div>
-
-            <div className='flex items-center gap-3'>
-              <div className="product-hearts">
-                <Image
-                  src="/assets/icons/red-heart.svg"
-                  alt="heart"
-                  width={20}
-                  height={20}
-                />
-
-                <p className="text-base font-semibold text-[#D46F77]">
-                  {product.reviewsCount}
-                </p>
-              </div>
-
-              <div className='p-2 bg-white-200 rounded-10'>
-                <Image
-                  src="/assets/icons/bookmark.svg"
-                  alt="bookmark"
-                  width={20}
-                  height={20}
-                  />
-              </div>
-
-              <div className='p-2 bg-white-200 rounded-10'>
-                <Image
-                  src="/assets/icons/share.svg"
-                  alt="share"
-                  width={20}
-                  height={20}
-                />
-              </div>
-            </div>
           </div>
 
           <div className='product-info'>
@@ -98,7 +65,7 @@ const ProductsDetails = async({params}:Props)=> {
                     height={16}
                   />
                   <p className='text-sm text-primary-orange font-semibold'>
-                    {product.stars || "35"}
+                    {product.stars}
                   </p>
                 </div>
 
@@ -110,7 +77,7 @@ const ProductsDetails = async({params}:Props)=> {
                     height={16}
                   />
                   <p className='text-sm text-black font-semibold'>
-                    {product.reviewsCount} Reviews
+                    {product.reviewsCount} Rating
                   </p>
                 </div>
               </div>
@@ -144,7 +111,7 @@ const ProductsDetails = async({params}:Props)=> {
 
               <PriceInfoCard
                 title="Lowest Price"
-                iconSrc="/assets/icons/arrow-up.svg"
+                iconSrc="/assets/icons/arrow-down.svg"
                 value={`${product.currency} ${formatNumber(product.lowestPrice)}`}
                 />
               </div>
@@ -155,7 +122,7 @@ const ProductsDetails = async({params}:Props)=> {
         </div>
       </div>
       <div className='flex flex-col gap-16'>
-        <div className='flex flex-col gap-5'>
+        <div className='flex flex-col gap-5 pt-20'>
           <h3 className='text-2xl text-secondary font-semibold'>
             Product Description
           </h3>
@@ -170,7 +137,7 @@ const ProductsDetails = async({params}:Props)=> {
             width={22}
             height={22}
           />
-          <Link href='/' className='text-base text-white'>
+          <Link href={product.url} className='text-base text-white'>
             Buy Now
           </Link>
         </button>

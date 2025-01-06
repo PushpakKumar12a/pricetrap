@@ -6,6 +6,7 @@ const productSchema = new mongoose.Schema({
     currency: {type: String, required: true},
     image: {type: String, required: true},
     title : {type: String, required: true},
+    stars: {type: String},
     currentPrice: {type: Number, required: true},
     originalPrice: {type: Number, required: true},
     pricehistory:[
@@ -20,7 +21,7 @@ const productSchema = new mongoose.Schema({
     discountRate: {type: Number},
     description: {type: String},
     category: {type: String},
-    reviewsCount: {type: Number},
+    reviewsCount: {type: String},
     isOutofStock: {type: Boolean, default: false},
     users:[
         {email: {type: String, required: true}}
