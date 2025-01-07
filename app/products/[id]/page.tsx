@@ -83,8 +83,8 @@ const ProductsDetails = async({params}:Props)=> {
               </div>
 
               <p className="text-sm text-black opacity-50">
-                <span className="text-primary-green font-semibold">93%</span>
-                buyers have recommeded this.
+                <span className="text-primary-green font-semibold">{product.discountRate}% </span>
+                off on this product.
               </p>
             </div>
           </div>
