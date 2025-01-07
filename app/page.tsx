@@ -3,8 +3,10 @@ import Searchbar from "@/components/Searchbar"
 import Image from "next/image"
 import { getAllProducts } from "@/lib/actions"
 import ProductCard from "@/components/ProductCard"
+import { cookies } from "next/headers"
 
 const Home = async()=> {
+  cookies();
   const allProducts = await getAllProducts();
   return (
     <>
