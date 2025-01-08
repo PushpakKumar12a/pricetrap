@@ -58,14 +58,12 @@ export async function scrapeAmazonProduct(url:string){
         const reviews = $('#centerCol #averageCustomerReviews span #acrCustomerReviewText').text().replace(/[() ratings]/g, '');
         
         const stars1 = $('#cm_cr_dp_d_rating_histogram span.a-size-medium').text().trim().split(' ');
-        console.log('stars1',stars1);
 
         let categorych;
         if(title.includes('Laptop')){
             categorych='Computers & Accessories';
         }else{
             categorych= $('#above-dp-container ul.a-unordered-list.a-horizontal').text().trim().split('›')[0];
-            console.log('categorych',categorych)
         }
 
         const data ={
