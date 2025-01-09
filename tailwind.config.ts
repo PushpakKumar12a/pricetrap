@@ -7,9 +7,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-      screens: {
-        '663px': { max: '663px' }, // Applies styles for screens 660px or less
-      },
       colors: {
         primary: {
           DEFAULT: "#E43030",

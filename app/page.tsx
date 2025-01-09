@@ -16,7 +16,7 @@ const Home = async()=> {
           <p className="small-text">
             Smart Shopping Starts Here:
             <Image
-              src="/assets/icons/arrow-right.svg"
+              src="/assets/i-cons/arrow-right.svg"
               alt="arrow-right"
               width={16}
               height={16}
@@ -41,7 +41,7 @@ const Home = async()=> {
       <section className="trending-section">
         <h2 className="section-text">Trending</h2>
 
-        <div className="flex flex-wrap gap-x-8 gap-y-16 663px:justify-center lg:justify-start">
+        <div className="flex flex-wrap gap-x-8 gap-y-16">
           {allProducts?.sort(() => 0.5 - Math.random()).slice(0, 8).map((product) => (
               <ProductCard key={product._id} product={product}/>
           ))}
