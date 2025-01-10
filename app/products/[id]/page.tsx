@@ -130,17 +130,19 @@ const ProductsDetails = async({params}:Props)=> {
             {product?.description?.split('\n')}
           </div>
         </div>
-        <button className='btn w-fit mx-auto flex items-center justify-center gap-3 min-w-[200px]'>
-          <Image
-            src='/assets/icons/bag.svg'
-            alt='check'
-            width={22}
-            height={22}
-          />
-          <Link href={product.url} className='text-base text-white'>
-            Buy Now
-          </Link>
-        </button>
+        <Link href={product.url}>
+          <button className='btn w-fit mx-auto flex items-center justify-center gap-3 min-w-[200px]'>
+            <Image
+              src='/assets/icons/bag.svg'
+              alt='check'
+              width={22}
+              height={22}
+              />
+            <p className='text-base text-white'>
+              Buy Now
+            </p>
+          </button>
+        </Link>
       </div>
       {similarProducts && similarProducts?.length > 0 &&(
           <div className='py-14 flex flex-col gap-2 w-full'>
