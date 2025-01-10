@@ -16,7 +16,7 @@ const Home = async()=> {
           <p className="small-text">
             Smart Shopping Starts Here:
             <Image
-              src="/assets/i-cons/arrow-right.svg"
+              src="/assets/icons/arrow-right.svg"
               alt="arrow-right"
               width={16}
               height={16}
