@@ -9,66 +9,64 @@ export const maxDuration =60; //1 hour
 export const dynamic ='force-dynamic';
 export const revalidate = 0;
 
-export async function GET(request: Request){
-    try{
+export async function GET() {
+    try {
         connectToDB();
         const products = await Product.find({});
+        if (!products) throw new Error("No products fetched");
 
-        if(!products) throw new Error("No products fetch");
-
-        //1.Scrape Latest product details & update in DB
+        // 1. Scrape Latest Product Details & Update in DB
         const updatedProducts = await Promise.all(
             products.map(async (currentProduct) => {
                 const scrapedProduct = await scrapeAmazonProduct(currentProduct.url);
 
-                if(!scrapedProduct) return;
+                if (!scrapedProduct) return;
 
-                const updatedPriceHistory=[
-                    ...currentProduct.priceHistory,
-                    {price:scrapedProduct.currentPrice},
-                ];
-    
-                const product ={
+                const updatedPriceHistory = Array.isArray(currentProduct.priceHistory) 
+                    ? [...currentProduct.priceHistory, { price: scrapedProduct.currentPrice }] 
+                    : [{ price: scrapedProduct.currentPrice }];
+
+                const product = {
                     ...scrapedProduct,
                     priceHistory: updatedPriceHistory,
-                    lowestPrice:getLowestPrice(updatedPriceHistory),
+                    lowestPrice: getLowestPrice(updatedPriceHistory),
                     highestPrice: getHighestPrice(updatedPriceHistory),
                     averagePrice: getAveragePrice(updatedPriceHistory),
                 };
-    
+
                 const updatedProduct = await Product.findOneAndUpdate(
-                    {url:product.url},
-                    product,       
+                    { url: product.url },
+                    product,
+                    { new: true } // Ensure it returns the updated document
                 );
 
-                //2.check each product's status & send email accordingly
+                // 2. Check Product Status & Send Email Notification
+                if (updatedProduct) {
+                    const emailNotifType = getEmailNotifType(scrapedProduct, currentProduct);
 
-                const emailNotifType = getEmailNotifType(scrapedProduct, currentProduct);
-                
-                if(emailNotifType && updatedProduct.users.length > 0){
-                    const productInfo ={
-                        title: updatedProduct.title,
-                        url: updatedProduct.url,
-                        image: updatedProduct.image,
+                    if (emailNotifType && updatedProduct.users?.length > 0) {
+                        const productInfo = {
+                            title: updatedProduct.title,
+                            url: updatedProduct.url,
+                            image: updatedProduct.image,
+                        };
+
+                        const emailContent = await generateEmailBody(productInfo, emailNotifType);
+                        const userEmails = updatedProduct.users.map((user: any) => user.email);
+
+                        await sendEmail(emailContent, userEmails);
                     }
-
-                    const emailContent = await generateEmailBody(productInfo, emailNotifType);
-
-                    const userEmails = updatedProduct.users.map((user : any) => user.email);
-
-                    await sendEmail(emailContent, userEmails);
                 }
-                    
-                return updatedProduct;
 
+                return updatedProduct;
             })
         );
 
         return NextResponse.json({
-            message:'OK',
-            data:updatedProducts,
-        })
-    }catch(e:any){
+            message: "OK",
+            data: updatedProducts,
+        });
+    } catch (e: any) {
         throw new Error(`Error in get: ${e.message}`);
     }
 }
