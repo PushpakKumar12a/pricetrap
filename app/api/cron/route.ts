@@ -19,9 +19,9 @@ export async function GET() {
         const updatedProducts = await Promise.all(
             products.map(async (currentProduct) => {
                 const scrapedProduct = await scrapeAmazonProduct(currentProduct.url);
-
-                if (!scrapedProduct) return;
-
+                
+                if (!scrapedProduct || !scrapedProduct.currentPrice) return; // Ensure scraped data is valid
+                
                 const updatedPriceHistory = Array.isArray(currentProduct.priceHistory) 
                     ? [...currentProduct.priceHistory, { price: scrapedProduct.currentPrice }] 
                     : [{ price: scrapedProduct.currentPrice }];
@@ -37,14 +37,14 @@ export async function GET() {
                 const updatedProduct = await Product.findOneAndUpdate(
                     { url: product.url },
                     product,
-                    { new: true } // Ensure it returns the updated document
+                    { new: true } // Ensure updated document is returned
                 );
 
                 // 2. Check Product Status & Send Email Notification
                 if (updatedProduct) {
                     const emailNotifType = getEmailNotifType(scrapedProduct, currentProduct);
 
-                    if (emailNotifType && updatedProduct.users?.length > 0) {
+                    if (emailNotifType && updatedProduct?.users?.length > 0) {
                         const productInfo = {
                             title: updatedProduct.title,
                             url: updatedProduct.url,
