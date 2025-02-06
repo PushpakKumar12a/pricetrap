@@ -151,7 +151,7 @@
   }
 
   .searchbartop-input{
-    @apply w-full p-1.5 pl-12 rounded-full border border-gray-300 shadow-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-500;
+    @apply w-full p-1.5 pl-12 rounded-full border border-gray-300 shadow-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-500 hidden sm:block;
   }
   
   .searchbartop-btn{
@@ -159,17 +159,13 @@
   }
 
   .loader {
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid #f15454;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    animation: spin 2s linear infinite;
+      @apply border-4 border-solid border-gray-200 border-t-red-500 rounded-full w-5 h-5;
+      animation: spin 2s linear infinite;
   }
-
+  
   @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
   }
   
 }
