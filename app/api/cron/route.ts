@@ -18,10 +18,18 @@ export async function GET() {
         // 1. Scrape Latest Product Details & Update in DB
         const updatedProducts = await Promise.all(
             products.map(async (currentProduct) => {
-                const scrapedProduct = await scrapeAmazonProduct(currentProduct.url);
-                
-                if (!scrapedProduct || !scrapedProduct.currentPrice) return; // Ensure scraped data is valid
-                
+                let scrapedProduct;
+                try {
+                    scrapedProduct = await scrapeAmazonProduct(currentProduct.url);
+                    if (!scrapedProduct || !scrapedProduct.currentPrice) {
+                        console.error(`Scraping failed or returned no price for: ${currentProduct.url}`);
+                        return;
+                    }
+                } catch (err:any) {
+                    console.error(`Error scraping product ${currentProduct.url}:`, err.message);
+                    return; // Skip this product and continue with others
+                }
+
                 const updatedPriceHistory = Array.isArray(currentProduct.priceHistory) 
                     ? [...currentProduct.priceHistory, { price: scrapedProduct.currentPrice }] 
                     : [{ price: scrapedProduct.currentPrice }];
@@ -37,7 +45,7 @@ export async function GET() {
                 const updatedProduct = await Product.findOneAndUpdate(
                     { url: product.url },
                     product,
-                    { new: true } // Ensure updated document is returned
+                    { new: true }
                 );
 
                 // 2. Check Product Status & Send Email Notification
@@ -64,9 +72,11 @@ export async function GET() {
 
         return NextResponse.json({
             message: "OK",
-            data: updatedProducts,
+            data: updatedProducts.filter(Boolean), // Remove undefined values
         });
     } catch (e: any) {
-        throw new Error(`Error in get: ${e.message}`);
+        console.error(`Error in GET: ${e.message}`);
+        return NextResponse.json({ error: e.message }, { status: 500 });
     }
 }
+
