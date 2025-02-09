@@ -49,7 +49,7 @@ const Searchbar = () => {
 
     }
     return (
-        <form className="flex flex-wrap gap-4 mt-12"
+        <form className="flex gap-4 mt-12 flex-col sm:flex-row"
         onSubmit={handleSubmit}
         >
             <input

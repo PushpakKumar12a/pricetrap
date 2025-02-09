@@ -47,6 +47,7 @@ export async function scrapeAndStoreProduct(productUrl: string){
         throw new Error(`Failed to create/update product: ${error.message}`)
     }
 }
+
 export async function getProductById(productId: string){
     try{
         connectToDB();
@@ -59,6 +60,7 @@ export async function getProductById(productId: string){
         console.log(error);
     }
 }
+
 export async function getAllProducts(){
     try{
         connectToDB();
@@ -68,6 +70,7 @@ export async function getAllProducts(){
         console.log(error);
     }
 }
+
 export async function getSimilarProducts(productId:string){
     try{
         connectToDB();

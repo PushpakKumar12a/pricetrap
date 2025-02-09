@@ -121,12 +121,12 @@ const ProductsDetails = async({params}:Props)=> {
           
         </div>
       </div>
-      <div className='flex flex-col gap-16'>
+      <div className='flex flex-col gap-16 w-full'>
         <div className='flex flex-col gap-5 pt-20'>
           <h3 className='text-2xl text-secondary font-semibold'>
             Product Description
           </h3>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 overflow-auto max-h-80">
             {product?.description?.split('\n')}
           </div>
         </div>
